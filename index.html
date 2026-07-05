@@ -375,9 +375,9 @@ footer .tag{font-family:'Shantell Sans',cursive}
         <path d="M62 76 q4 4 9 1" stroke="#f4ead5" stroke-width="3.4" stroke-linecap="round" fill="none"/>
         <path d="M14 52 l-8-4 M16 62 l-9 1 M20 42 l-6-7" stroke="#f4ead5" stroke-width="3.4" stroke-linecap="round"/>
       </svg>
-      <figure class="polaroid p1"><img src="https://images.deliveryhero.io/image/talabat/MenuItems/mmw_638938052788390745?width=500" alt="Hot matcha latte with latte art at Saturdays Specialty Coffee, Ard El Golf, Nasr City" loading="eager" /></figure>
-      <figure class="polaroid p2"><img src="https://images.deliveryhero.io/image/talabat/MenuItems/mmw_638938019573624685?width=500" alt="Iced caramel macchiato with caramel drizzle at Saturdays, Ard El Golf, Cairo" loading="eager" /></figure>
-      <figure class="polaroid p3"><img src="https://images.deliveryhero.io/image/talabat/MenuItems/mmw_638938055527841939?width=500" alt="Iced Spanish latte at Saturdays Specialty Coffee, Nasr City, Cairo" loading="eager" /></figure>
+      <figure class="polaroid p1"><img src="https://images.deliveryhero.io/image/talabat/MenuItems/mmw_638938052788390745?width=500" alt="Hot matcha latte with latte art at Saturdays Specialty Coffee, Ard El Golf, Nasr City" loading="lazy" decoding="async" referrerpolicy="no-referrer" /></figure>
+      <figure class="polaroid p2"><img src="https://images.deliveryhero.io/image/talabat/MenuItems/mmw_638938019573624685?width=500" alt="Iced caramel macchiato with caramel drizzle at Saturdays, Ard El Golf, Cairo" loading="lazy" decoding="async" referrerpolicy="no-referrer" /></figure>
+      <figure class="polaroid p3"><img src="https://images.deliveryhero.io/image/talabat/MenuItems/mmw_638938055527841939?width=500" alt="Iced Spanish latte at Saturdays Specialty Coffee, Nasr City, Cairo" loading="lazy" decoding="async" referrerpolicy="no-referrer" /></figure>
     </div>
   </div>
 </header>
@@ -620,7 +620,7 @@ function render(ci){
     card.style.animationDelay=(idx*0.045)+'s';
     card.innerHTML=`
       <div class="imgbox">
-        ${img?`<img src="${img}?width=400" class="${cls||''}" alt="${name} at Saturdays Specialty Coffee, Ard El Golf, Nasr City" loading="lazy" onerror="this.parentNode.innerHTML='<div class=ph>${PH.replace(/"/g,'&quot;').replace(/\n/g,'')}</div>'">`:`<div class="ph">${PH}</div>`}
+        ${img?`<img src="${img}?width=400" class="${cls||''}" alt="${name} at Saturdays Specialty Coffee, Ard El Golf, Nasr City" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>${PH.replace(/"/g,'&quot;').replace(/\n/g,'')}</div>'">`:`<div class="ph">${PH}</div>`}
         ${POPULAR.has(name)?'<span class="badge">Favourite</span>':''}
       </div>
       <div class="body">
@@ -643,15 +643,19 @@ const STRIP=[
 const track=document.getElementById('stripTrack');
 [...STRIP,...STRIP].forEach(u=>{
   const im=document.createElement('img');
-  im.src=u+'?width=400';im.alt='Saturdays Specialty Coffee drink';im.loading='lazy';
+  im.src=u+'?width=400';im.alt='Saturdays Specialty Coffee drink';im.loading='lazy';im.decoding='async';im.referrerPolicy='no-referrer';
   track.appendChild(im);
 });
 
 /* scroll reveal */
-const io=new IntersectionObserver(es=>{
-  es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),(i%3)*110);io.unobserve(e.target);}});
-},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+if ('IntersectionObserver' in window) {
+  const io=new IntersectionObserver(es=>{
+    es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),(i%3)*110);io.unobserve(e.target);}});
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('on'));
+}
 </script>
 </body>
 </html>
